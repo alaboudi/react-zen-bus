@@ -30,7 +30,8 @@
     "analyze": "size-limit --why"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=16",
+    "@zenstack/zen-bus": "^0.3.0"
   },
   "husky": {
     "hooks": {
