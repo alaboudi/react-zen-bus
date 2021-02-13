@@ -1,29 +1,26 @@
 import { useEffect } from "react";
-import { EventBus, EventType, EventHandler, Event, Unsubscriber } from "@zenstack/zen-bus";
+import { EventBus, EventType, EventHandler, Unsubscriber } from "@zenstack/zen-bus";
 
-const subscribeHandlers = <T extends Event>(
+type Subscriptions = [EventType<any>, EventHandler<any>][];
+
+const subscribeHandlers = (
     eventBus: EventBus,
-    subscribeMap: Map<EventType<T>, EventHandler<T>>
+    subscriptionTuples: Subscriptions
 ): Unsubscriber[] => {
-    const unsubscribers: Unsubscriber[] = [];
-
-    subscribeMap.forEach((handler, eventType) => {
-        const unsubscribe = eventBus.subscribe(eventType, handler);
-        unsubscribers.push(unsubscribe);
-    });
-
-    return unsubscribers;
+    return subscriptionTuples.map(
+        ([eventType, handler]) => eventBus.subscribe(eventType, handler)
+    );
 }
 
 const unsubscribeHandlers = (unsubscribers: Unsubscriber[]) => {
     unsubscribers.forEach(unsubscribe => unsubscribe());
 }
 
-const useSubscribe = <T extends Event>(eventBus: EventBus, subscribeMap: Map<EventType<T>, EventHandler<T>>) => {
+const useSubscribe = (eventBus: EventBus, subscriptionTuples: Subscriptions) => {
     useEffect(() => {
-        const unsubscribers = subscribeHandlers(eventBus, subscribeMap);
+        const unsubscribers = subscribeHandlers(eventBus, subscriptionTuples);
         return () => unsubscribeHandlers(unsubscribers);
-    }, [eventBus, subscribeMap]);
+    }, [eventBus, subscriptionTuples]);
 };
 
 export default useSubscribe;

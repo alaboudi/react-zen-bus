@@ -19,17 +19,17 @@ The `useSubscribe` hooks allows your event handlers to subscribe to the event bu
 In addition, it will unsubscribe your handlers when the components unmount.
 
 ```jsx
-import {createEventBus} from "@zenstack/zen-bus";
+import {createEventBus, EventType, EventHandler} from "@zenstack/zen-bus";
 import {useSubscribe} from "@zenstack/react-zen-bus";
 
 const myTodoList = ['Clean Toilet'];
 const addToList = (event) => myTodoList.push(event.title);
 const logEvent = (event) => console.log(event);
 
-const eventToHandlerMap = new Map([
+const subscriptions: [EventType<any>, EventHandler<any>][] = [
     ["Todo Added", addToList],
     ["Todo Added", logEvent]
-]);
+];
 
 /**
  * Once this component mounts, addToLis and logEvent will both 
@@ -37,7 +37,7 @@ const eventToHandlerMap = new Map([
  * They both will unsubscribe from the event bus when the component unmounts.
  */
 const MyComponent = () => {
-    useSubscribe(eventBus, eventToHandlerMap);
+    useSubscribe(eventBus, subscriptions);
     
     return (
         <div>
