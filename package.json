@@ -9,7 +9,7 @@
     "react",
     "binding"
   ],
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -30,8 +30,8 @@
     "analyze": "size-limit --why"
   },
   "peerDependencies": {
-    "react": ">=16",
-    "@zenstack/zen-bus": "^0.3.0"
+    "@zenstack/zen-bus": "^0.3.0",
+    "react": ">=16"
   },
   "husky": {
     "hooks": {
